@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "139456573951",
+    "project_id": "medifinder-3cff0",
+    "storage_bucket": "medifinder-3cff0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139456573951:android:02536c2804eed0a1a6b7ca",
+        "android_client_info": {
+          "package_name": "com.medifinder.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139456573951-a60dulbcguc189v3bakictlebk1qjdp4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGIvV7qVXhNRIaHZ46mVrM1f0rx2IbVu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139456573951-a60dulbcguc189v3bakictlebk1qjdp4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "139456573951-lvoci2abk5v8btia2213g634c16f3o7b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.medifinder.app.testProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
