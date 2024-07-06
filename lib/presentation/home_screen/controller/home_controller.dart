@@ -12,91 +12,89 @@ import '../models/home_screen_model.dart';
 /// This class manages the state of the Iphone1415ProMaxThreeScreen, including the
 /// current iphone1415ProMaxThreeModelObj
 class HomeController extends GetxController {
-  TextEditingController searchController = TextEditingController();
+  // TextEditingController searchController = TextEditingController();
   CollectionReference medicines = FirebaseFirestore.instance.collection('medicines');
 
-  Rx<HomeScreenModel> iphone1415ProMaxThreeModelObj =
-      HomeScreenModel().obs;
-   User? user;
+
+  User? user;
 
   RxList<AddMedicineModel> foundMedicine = <AddMedicineModel>[].obs;
   RxBool isNameSelected = true.obs;
   RxBool isRackSelected = false.obs;
   RxList<AddMedicineModel> dataList = <AddMedicineModel>[].obs;
   RxBool isLoading =false.obs;
-@override
+
+  Rx<TextEditingController> searchText = TextEditingController().obs;
+  @override
   void onInit() {
-  user = Get.arguments ;
+    user = Get.arguments ;
     super.onInit();
-    print('home');
+
   }
   List<AddMedicineModel> temp  =[];
   @override
   void onReady() async{
-  await getDetails().then((value) => foundMedicine = dataList);
-
-
-  temp = dataList.value;
+    await getDetails().then((value) => foundMedicine = dataList);
+    temp = dataList.value;
     super.onReady();
   }
 
-Future<void> getDetails() async {
- isLoading.value = true;
-  FirebaseFirestore.instance.collection('medicines').get()
-      .then((QuerySnapshot querySnapshot) {
-    isLoading.value = false;
-    querySnapshot.docs.forEach((doc) {
-      AddMedicineModel modelData = AddMedicineModel(
-          name: doc["name"],
-          rackNumber: doc["rack_number"],
-        description: doc["description"],
-        imgUrl: doc['img_url'],
-        usage: doc['usage']
+  Future<void> getDetails() async {
+    isLoading.value = true;
+    FirebaseFirestore.instance.collection('medicines').get()
+        .then((QuerySnapshot querySnapshot) {
+      isLoading.value = false;
+      querySnapshot.docs.forEach((doc) {
+        AddMedicineModel modelData = AddMedicineModel(
+            name: doc["name"],
+            rackNumber: doc["rack_number"],
+            description: doc["description"],
+            imgUrl: doc['img_url'],
+            usage: doc['usage']
 
-      );
-      dataList.add(modelData);
+        );
+        dataList.add(modelData);
+      });
+
+    }).catchError((e){
+      isLoading.value = false;
+      ShowDialog.errorDialog();
     });
-
-  }).catchError((e){
-    isLoading.value = false;
-    ShowDialog.errorDialog();
-  });
-}
+  }
 
 
-
-void filterName(String name){
-  //List<AddMedicineModel> result =[];
-
-  if(name.isEmpty){
-    foundMedicine.value = temp;
-
-  }else{
-    if(isNameSelected.value){
-      foundMedicine.value = dataList.where((element) => element.name.toString().toLowerCase().contains(name.toLowerCase().trim())).toList();
+  List<AddMedicineModel> foundMedicines =[];
+  void filterName(){
+    String name = searchText.value.text;
+    //List<AddMedicineModel> result =[];
+    if(name.isEmpty){
+      foundMedicine.value = temp;
     }else{
-      foundMedicine.value = dataList.where((element) => element.rackNumber.toString().toLowerCase().contains(name.toLowerCase().trim())).toList();
+      if(isNameSelected.value){
+
+
+        // foundMedicine.value = dataList.firstWhere((element) => element.name.trim().contains(name.trim()));
+        // Clear previous search results
+
+        //     // Perform search by filtering Sinhala words that contain the query
+        foundMedicine.value = dataList.where((word) => word.name.toLowerCase().trim().contains(name.toLowerCase().trim()))
+            .toList();
+        print(foundMedicine.value);
+      }else{
+        foundMedicine.value = dataList.where((element) => element.rackNumber.toString().contains(name.trim())).toList();
+      }
     }
-
   }
-
-}
-  @override
-  void onClose() {
-    super.onClose();
-    searchController.dispose();
-  }
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   searchText.value.dispose();
+  // }
   final GoogleSignIn googleSignIn = GoogleSignIn();
-
-
-
-
-
-
   Future<void> logoutGoogle() async {
-    await googleSignIn.signOut().then((value) {
+    await FirebaseAuth.instance.signOut().then((value) {
       Get.offAllNamed(AppRoutes.loginScreen);
     });
-     // navigate to your wanted page after logout.
   }
+
 }
