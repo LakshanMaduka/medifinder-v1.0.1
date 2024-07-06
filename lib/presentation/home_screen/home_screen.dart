@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:medifinder/core/consts/AppColors.dart';
 import 'package:medifinder/presentation/add_medicine_screen/models/add_medicine_model.dart';
 import 'package:medifinder/presentation/home_screen/widgets/shimmer.dart';
+import 'package:medifinder/presentation/login_screen/controller/login_controller.dart';
+import 'package:medifinder/presentation/splash_screen/controller/splash_screen_controller.dart';
+import 'package:medifinder/presentation/splash_screen/splash_screen.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_outlined_button.dart';
@@ -20,6 +23,7 @@ class HomeScreen
         );
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
    final HomeController homeController = Get.put(HomeController());
+   final SplashScreenController spController = Get.find<SplashScreenController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
