@@ -8,9 +8,8 @@ import '../models/splash_screen_model.dart';
 /// This class manages the state of the Iphone1415ProMaxOneScreen, including the
 /// current iphone1415ProMaxOneModelObj
 class SplashScreenController extends GetxController {
-  Rx<SplashScreenModel> iphone1415ProMaxOneModelObj =
-      SplashScreenModel().obs;
 
+User? getUser;
   @override
   void onReady() {
     Future.delayed(const Duration(milliseconds: 3000), () {
@@ -18,9 +17,9 @@ class SplashScreenController extends GetxController {
           .authStateChanges()
           .listen((User? user) {
         if (user == null) {
-
           Get.offAllNamed(AppRoutes.loginScreen,);
         } else {
+          getUser = user;
          Get.offAllNamed(AppRoutes.homeScreen,arguments: user);
         }
       });

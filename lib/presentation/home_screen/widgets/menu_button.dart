@@ -5,10 +5,11 @@ import 'package:medifinder/core/app_export.dart';
 import 'package:medifinder/core/consts/AppColors.dart';
 import 'package:medifinder/core/consts/AppStyle.dart';
 import 'package:medifinder/presentation/home_screen/controller/home_controller.dart';
+import 'package:medifinder/presentation/splash_screen/splash_screen.dart';
 class MyDrawer extends GetWidget<HomeController> {
   GlobalKey<ScaffoldState>? scaffoldKey;
   MyDrawer({this.scaffoldKey});
-  var homeController = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

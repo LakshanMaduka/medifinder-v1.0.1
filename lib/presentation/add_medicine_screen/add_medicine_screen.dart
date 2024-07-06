@@ -13,8 +13,7 @@ import 'controller/add_medicine_controller.dart'; // ignore_for_file: must_be_im
 // ignore_for_file: must_be_immutable
 
 // ignore_for_file: must_be_immutable
-class AddMedicineScreen
-    extends GetWidget<AddMedicineController> {
+class AddMedicineScreen extends GetWidget<AddMedicineController> {
   AddMedicineScreen({Key? key})
       : super(
           key: key,
@@ -47,13 +46,20 @@ class AddMedicineScreen
                     SizedBox(height: 14.v),
                     Row(
                       children: [
-                        IconButton(onPressed: (){
-                          Get.back();
-                         // var homeController = Get.find<HomeController>();
-                         // homeController.foundMedicine.value = [];
-                         // homeController.getDetails();
-                        }, icon: Icon(Icons.arrow_back,color: AppColors.darkGreen,)),
-                        SizedBox(width: 50.v,),
+                        IconButton(
+                            onPressed: () {
+                              Get.back();
+                              // var homeController = Get.find<HomeController>();
+                              // homeController.foundMedicine.value = [];
+                              // homeController.getDetails();
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: AppColors.darkGreen,
+                            )),
+                        SizedBox(
+                          width: 50.v,
+                        ),
                         CustomImageView(
                           imagePath: ImageConstant.imgUntitled11,
                           height: 123.v,
@@ -93,7 +99,7 @@ class AddMedicineScreen
             ),
           ),
         ),
-        bottomNavigationBar: Obx( ()=> _buildAddmedicine()),
+        bottomNavigationBar: Obx(() => _buildAddmedicine()),
       ),
     );
   }
@@ -157,7 +163,6 @@ class AddMedicineScreen
         ),
         SizedBox(height: 4.v),
         CustomTextFormField(
-
           controller: controller.descriptionController,
           hintText: "lbl_type_here2".tr,
         )
@@ -176,7 +181,6 @@ class AddMedicineScreen
         ),
         SizedBox(height: 4.v),
         CustomTextFormField(
-
           controller: controller.usageController,
           hintText: "lbl_type_here2".tr,
           textInputAction: TextInputAction.done,
@@ -188,76 +192,84 @@ class AddMedicineScreen
   /// Section Widget
   Widget _buildRowuploadtothe() {
     return GestureDetector(
-      onTap: (){
-        controller.uploadImage();
+      onTap: () {
+        controller.getImage();
       },
-      child: Obx( () => Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 85.h,
-          vertical: 58.v,
+      child: Obx(
+        () => Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 85.h,
+            vertical: 58.v,
+          ),
+          decoration: AppDecoration.outlinePrimary.copyWith(
+            borderRadius: BorderRadiusStyle.roundedBorder30,
+          ),
+          child: controller.isLoading.value
+              ? Center(
+                  child: Column(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Uploading...",
+                        style: TextStyle(color: AppColors.darkGreen),
+                      )
+                    ],
+                  ),
+                )
+              : controller.pickedImage.value != null
+                  ? Image.file(File(controller.pickedImage.value!.path))
+                  : Row(
+                      children: [
+                        CustomImageView(
+                          imagePath: ImageConstant.imgUploadToTheCloud,
+                          height: 43.v,
+                          width: 58.h,
+                          margin: EdgeInsets.symmetric(vertical: 6.v),
+                        ),
+                        Container(
+                          width: 114.h,
+                          margin: EdgeInsets.only(
+                            left: 5.h,
+                            top: 4.v,
+                          ),
+                          child: Text(
+                            "msg_click_to_upload".tr,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: CustomTextStyles.bodyLargeBlack900,
+                          ),
+                        )
+                      ],
+                    ),
         ),
-        decoration: AppDecoration.outlinePrimary.copyWith(
-          borderRadius: BorderRadiusStyle.roundedBorder30,
-        ),
-        child:
-       controller.isLoading.value ? Center(
-         child: Column(
-           children: [
-             CircularProgressIndicator(),
-             SizedBox(height: 5,),
-             Text("Uploading...",style: TextStyle(
-               color: AppColors.darkGreen
-             ),)
-           ],
-         ),
-       ): controller.pickedImage.value != null ? Image.file(File(controller.pickedImage.value!.path)):
-       Row(
-         children: [
-           CustomImageView(
-             imagePath: ImageConstant.imgUploadToTheCloud,
-             height: 43.v,
-             width: 58.h,
-             margin: EdgeInsets.symmetric(vertical: 6.v),
-           ),
-           Container(
-             width: 114.h,
-             margin: EdgeInsets.only(
-               left: 5.h,
-               top: 4.v,
-             ),
-             child: Text(
-               "msg_click_to_upload".tr,
-               maxLines: 2,
-               overflow: TextOverflow.ellipsis,
-               style: CustomTextStyles.bodyLargeBlack900,
-             ),
-           )
-         ],
-       ),
-      ),
       ),
     );
   }
 
   /// Section Widget
   Widget _buildAddmedicine() {
-    return controller.isLoadingMedicine.value ? Center(
-      child: CircularProgressIndicator(),
-    ) : CustomOutlinedButton(
-      text: "lbl_add_medicine".tr,
-      margin: EdgeInsets.only(
-        left: 28.h,
-        right: 28.h,
-        bottom: 39.v,
-      ),
-      isDisabled: controller.isLoading.value? true:false,
-      buttonStyle: CustomButtonStyles.outlinePrimaryTL281,
-      buttonTextStyle: CustomTextStyles.titleLargeOnPrimary,
-      onPressed: (){
-         if(_formKey.currentState!.validate()){
-           controller.addMedicine();
-         }
-      },
-    );
+    return controller.isLoadingMedicine.value
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : CustomOutlinedButton(
+            text: "lbl_add_medicine".tr,
+            margin: EdgeInsets.only(
+              left: 28.h,
+              right: 28.h,
+              bottom: 39.v,
+            ),
+            isDisabled: controller.isLoading.value ? true : false,
+            buttonStyle: CustomButtonStyles.outlinePrimaryTL281,
+            buttonTextStyle: CustomTextStyles.titleLargeOnPrimary,
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                controller.addMedicine();
+              }
+            },
+          );
   }
 }

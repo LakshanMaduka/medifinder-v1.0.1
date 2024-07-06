@@ -1,12 +1,17 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+ import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medifinder/presentation/add_medicine_screen/widgets/sucess_dialog.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../core/app_export.dart';
 import '../models/add_medicine_model.dart';
+import 'package:path/path.dart' as path;
 
 /// A controller class for the Iphone1415ProMaxFiveScreen.
 ///
@@ -21,78 +26,113 @@ class AddMedicineController extends GetxController {
 
   TextEditingController usageController = TextEditingController();
 
-  final ImagePicker _picker = ImagePicker();
+
   Rx<XFile?> pickedImage = Rx<XFile?>(null);
   RxString imageUrl = "".obs;
   RxBool isLoading = false.obs;
 
-
-
-
-  uploadImage() async {
-    final _firebaseStorage = FirebaseStorage.instance;
-    final _imagePicker = ImagePicker();
-
-    //Check Permissions
-    //Select Image
-    pickedImage.value =
-        await _imagePicker.pickImage(source: ImageSource.camera);
+ Future<bool> uploadImage(XFile file) async {
     isLoading.value = true;
-    var file = File(pickedImage.value!.path);
-
-    if (pickedImage.value != null) {
-      //Upload to Firebase
+    final _firebaseStorage = FirebaseStorage.instance;
+    try {
       var snapshot = await _firebaseStorage
           .ref()
           .child('images/${nameController.text}')
-          .putFile(file, SettableMetadata(contentType: 'image/jpeg'));
-
+          .putFile(
+              File(file.path), SettableMetadata(contentType: 'image/jpeg'));
       var downloadUrl = await snapshot.ref.getDownloadURL();
-
       imageUrl.value = downloadUrl;
-      print(imageUrl.value);
       isLoading.value = false;
-    } else {
+      return true;
+
+    } catch (e) {
       isLoading.value = false;
-      print('No Image Path Received');
+      Get.snackbar("Error !", "Upload faild");
+      return false;
     }
   }
 
-    Future<File>  getImage() async{
-    final _imagePicker = ImagePicker();
-    //Check Permissions
-    //Select Image
-  final value = await _imagePicker.pickImage(source: ImageSource.camera);
-    isLoading.value = true;
-    var file;
-   if(value != null)  file = File(value.path);
-    return file;
+  final _imagePicker = ImagePicker();
+  void getImage() async {
+    final value = await _imagePicker.pickImage(source: ImageSource.camera);
+    if (value != null) {
+      pickedImage.value = XFile(value.path);
+      _cropImage(File(value.path));
+    }
   }
 
+  Future<void> _cropImage(File file) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: file.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Colors.blue,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ]);
+    if (croppedFile != null) {
+      // pickedImage.value = XFile(croppedFile.path);
+      _compressImage(File(croppedFile.path));
+    }
+  }
+  Future<void> _compressImage(File imageFile) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = path.join(dir.absolute.path, "compressed_${path.basename(imageFile.path)}");
 
+    var result  = await FlutterImageCompress.compressAndGetFile(
+        imageFile.absolute.path, targetPath,
+        quality: 50,
+      );
+
+    if (result != null) {
+
+        pickedImage.value = XFile(result.path);
+
+    }
+  }
   CollectionReference medicines =
       FirebaseFirestore.instance.collection('medicines');
   RxBool isLoadingMedicine = false.obs;
-  Future<void> addMedicine() {
+  Future<void> addMedicine() async {
     isLoadingMedicine.value = true;
-    AddMedicineModel addMedicine = AddMedicineModel(
-        name: nameController.text.trim(),
-        rackNumber: rackNoController.text.trim(),
-        description: descriptionController.text.trim(),
-        usage: usageController.text.trim(),
-        imgUrl: imageUrl.value);
-    // Call the user's CollectionReference to add a new user
-    return medicines.add(addMedicine.toJson()).then((value) {
+   bool isSuccess = await uploadImage(pickedImage.value!);
+
+   try {
+    if(isSuccess){
+      AddMedicineModel addMedicine = AddMedicineModel(
+          name: nameController.text.trim(),
+          rackNumber: rackNoController.text.trim(),
+          description: descriptionController.text.trim(),
+          usage: usageController.text.trim(),
+          imgUrl: imageUrl.value);
+      // Call the user's CollectionReference to add a new user
+      await  medicines.add(addMedicine.toJson());
       isLoadingMedicine.value = false;
       clearTextFields();
       ShowDialog.successDialog();
-    }).catchError((error) {
+    }else{
       isLoadingMedicine.value = false;
-      clearTextFields();
-      ShowDialog.errorDialog();
-    });
-  }
+      ShowDialog.customizedErrorDialog("Image Upload Failed!");
+    }
+   }
+   catch (e){
+       isLoadingMedicine.value = false;
+       clearTextFields();
+       ShowDialog.errorDialog();
 
+   }
+
+  }
+void store(){
+
+}
   void clearTextFields() {
     nameController.clear();
     rackNoController.clear();

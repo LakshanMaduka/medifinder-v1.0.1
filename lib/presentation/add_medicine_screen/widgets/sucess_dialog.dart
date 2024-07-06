@@ -36,4 +36,18 @@ class ShowDialog {
       btnOkColor: Colors.red,
     ).show();
   }
+  static customizedErrorDialog(String? desc){
+    AwesomeDialog(
+      context: Get.context!,
+      dialogType: DialogType.error,
+      animType: AnimType.rightSlide,
+      headerAnimationLoop: false,
+      title: 'Error',
+      desc:
+     desc ?? 'Something went wrong',
+      btnOkOnPress: () {},
+      btnOkIcon: Icons.cancel,
+      btnOkColor: Colors.red,
+    ).show();
+  }
 }

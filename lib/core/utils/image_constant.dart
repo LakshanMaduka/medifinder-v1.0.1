@@ -27,4 +27,6 @@ class ImageConstant {
   static String imgUntitled11 = '$imagePath/img_untitled_1_1.png';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
+
+  static String imgSuslLogo = "assets/images/Logo-SUSL.png";
 }

@@ -40,7 +40,7 @@ class MedicineItemWidget extends StatelessWidget {
           children: [
             CustomImageView(
               fit: BoxFit.fill,
-              imagePath: medicineModel.imgUrl,
+              imagePath: medicineModel.imgUrl == ""? 'assets/images/image_not_found.png': medicineModel.imgUrl,
               height: 89.v,
               width: 92.h,
               radius: BorderRadius.circular(

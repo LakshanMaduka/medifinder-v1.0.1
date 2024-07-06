@@ -42,8 +42,8 @@ class DetailsScreen
                 SizedBox(height: 42.v),
                 CustomImageView(
                   imagePath: controller.dataModel?.imgUrl??"",
-                  height: 255.v,
-                  width: 272.h,
+                  height: 350.v,
+                  width: 350.v,
                   radius: BorderRadius.circular(
                     30.h,
                   ),
