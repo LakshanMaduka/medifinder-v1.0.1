@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:medifinder/routes/app_routes.dart';
 
-import '../../../core/app_export.dart';
+
 import '../models/splash_screen_model.dart';
 
-/// A controller class for the Iphone1415ProMaxOneScreen.
-///
-/// This class manages the state of the Iphone1415ProMaxOneScreen, including the
-/// current iphone1415ProMaxOneModelObj
+
 class SplashScreenController extends GetxController {
 
 User? getUser;

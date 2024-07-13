@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medifinder/firebase_options.dart';
 import 'core/app_export.dart';
 
@@ -23,15 +24,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: theme,
-        translations: AppLocalization(),
-        locale: Get.deviceLocale,
-        fallbackLocale: Locale('en', 'US'),
-        title: 'medifinder',
-        initialRoute: AppRoutes.initialRoute,
-        getPages: AppRoutes.pages,
+      return ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: theme,
+          translations: AppLocalization(),
+          locale: Get.deviceLocale,
+          fallbackLocale: Locale('en', 'US'),
+          title: 'medifinder',
+          initialRoute: AppRoutes.initialRoute,
+          getPages: AppRoutes.pages,
+        ),
       );
     });
   }
