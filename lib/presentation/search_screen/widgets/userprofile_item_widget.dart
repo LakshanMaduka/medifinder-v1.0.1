@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:medifinder/presentation/add_medicine_screen/models/add_medicine_model.dart';
 import '../../../core/app_export.dart';
-import '../controller/home_controller.dart';
+import '../controller/search_controller.dart';
 import '../models/userprofile_item_model.dart'; // ignore: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -16,7 +16,7 @@ class MedicineItemWidget extends StatelessWidget {
 
   AddMedicineModel medicineModel;
 
-  var controller = Get.find<HomeController>();
+  var controller = Get.find<SearchScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +67,11 @@ class MedicineItemWidget extends StatelessWidget {
                            ),
 
                         SizedBox(width: 15.v,),
-                          Text(
-                            medicineModel.name,
-                            style: theme.textTheme.titleMedium,
+                          Expanded(
+                            child: Text(
+                              medicineModel.name,
+                              style: theme.textTheme.titleMedium,
+                            ),
                           ),
 
                       ],

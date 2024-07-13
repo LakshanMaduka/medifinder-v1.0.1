@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:medifinder/core/consts/AppColors.dart';
 import 'package:medifinder/presentation/add_medicine_screen/widgets/sucess_dialog.dart';
-import 'package:medifinder/presentation/home_screen/controller/home_controller.dart';
+import 'package:medifinder/presentation/search_screen/controller/search_controller.dart';
 import '../../core/app_export.dart';
 import '../../core/utils/validation_functions.dart';
 import '../../theme/custom_button_style.dart';

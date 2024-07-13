@@ -29,4 +29,7 @@ class ImageConstant {
   static String imageNotFound = 'assets/images/image_not_found.png';
 
   static String imgSuslLogo = "assets/images/Logo-SUSL.png";
+  static String oil = "assets/images/oil.jpg";
+  static String paththu = "assets/images/paththu.jpg";
+  static String drawer = "assets/images/drawer.jpg";
 }

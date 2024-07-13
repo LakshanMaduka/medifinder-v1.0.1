@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../core/app_export.dart';
+import '../core/consts/AppColors.dart';
 
 extension on TextStyle {
   TextStyle get poppins {
@@ -48,4 +50,9 @@ class CustomTextStyles {
   static get titleMediumPrimary => theme.textTheme.titleMedium!.copyWith(
         color: theme.colorScheme.primary,
       );
+  static TextStyle homeCardText = TextStyle(
+    fontSize: 16.sp,
+    color: AppColors.black
+  );
+
 }

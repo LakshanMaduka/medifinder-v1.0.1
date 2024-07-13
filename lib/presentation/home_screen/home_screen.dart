@@ -1,245 +1,167 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medifinder/core/consts/AppColors.dart';
-import 'package:medifinder/presentation/add_medicine_screen/models/add_medicine_model.dart';
-import 'package:medifinder/presentation/home_screen/widgets/shimmer.dart';
-import 'package:medifinder/presentation/login_screen/controller/login_controller.dart';
-import 'package:medifinder/presentation/splash_screen/controller/splash_screen_controller.dart';
-import 'package:medifinder/presentation/splash_screen/splash_screen.dart';
-import '../../core/app_export.dart';
-import '../../theme/custom_button_style.dart';
-import '../../widgets/custom_outlined_button.dart';
-import '../../widgets/custom_search_view.dart';
-import 'controller/home_controller.dart';
-import 'models/userprofile_item_model.dart';
-import 'widgets/menu_button.dart';
-import 'widgets/userprofile_item_widget.dart'; // ignore_for_file: must_be_immutable
+import 'package:flutter/widgets.dart';
 
-class HomeScreen
-    extends GetWidget<HomeController> {
-   HomeScreen({Key? key})
+import 'package:get/get.dart';
+import 'package:medifinder/core/app_export.dart';
+import 'package:medifinder/core/consts/AppColors.dart';
+import 'package:medifinder/core/utils/image_constant.dart';
+import 'package:medifinder/presentation/home_screen/controller/home_controller.dart';
+import 'package:medifinder/widgets/custom_image_view.dart';
+import 'package:medifinder/widgets/menu_button.dart';
+
+class HomeScreen extends GetWidget<HomeController> {
+  HomeScreen({Key? key})
       : super(
-          key: key,
-        );
+    key: key,
+  );
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-   final HomeController homeController = Get.put(HomeController());
-   final SplashScreenController spController = Get.find<SplashScreenController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        backgroundColor: theme.colorScheme.onPrimary,
         drawer: MyDrawer(scaffoldKey: scaffoldKey,),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: 20.h,
 
-        body: RefreshIndicator(
-          onRefresh: () async{
-            await Future.delayed(const Duration(seconds: 2));
-            Get.offAllNamed(AppRoutes.homeScreen);
-          },
-          child: SingleChildScrollView(
-            child: Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(
-                horizontal: 18.h,
-                vertical: 26.v,
               ),
-              child: Column(
-
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 10.v),
                   Padding(
                     padding: EdgeInsets.only(
-                      left: 10.h,
-                      right: 98.h,
+                      left: 20.h,
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomImageView(
-                          imagePath: ImageConstant.imgMenu,
-                          height: 41.adaptSize,
-                          width: 41.adaptSize,
-                          margin: EdgeInsets.only(
-                            top: 32.v,
-                            bottom: 50.v,
-                          ),
-                          onTap: () {
-
-                            scaffoldKey.currentState?.openDrawer();
-                          },
-                        ),
-                        CustomImageView(
-                          imagePath: ImageConstant.imgUntitled11,
-                          height: 123.v,
-                          width: 199.h,
-                          margin: EdgeInsets.only(left: 46.h),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30.v),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.h),
-                    child: Text(
-                      "lbl_find_medicine".tr,
-                      style: theme.textTheme.headlineSmall,
-                    ),
-                  ),
-                  SizedBox(height: 10.v),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.h),
-                    child: Text(
-                      "lbl_search_by".tr,
-                      style: theme.textTheme.titleLarge,
-                    ),
-                  ),
-                  SizedBox(height: 10.v),
-                  _buildRowname(),
-                  SizedBox(height: 16.v),
-                  Obx( ()=> Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: CustomSearchView(
-                        controller: controller.searchText.value,
-                        hintText: controller.isRackSelected.value ? "Ex- E - 26": "Ex- Komarika",
-                        alignment: Alignment.center,
-                        onChanged: (value){
-                          if(value.isEmpty){
-
-                            controller.foundMedicine.value = controller.temp;
-                          }
-                          // homeController.filterName();
-                        },
+                    child: CustomImageView(
+                      imagePath: ImageConstant.imgMenu,
+                      height: 41.adaptSize,
+                      width: 41.adaptSize,
+                      margin: EdgeInsets.only(
+                        top: 32.v,
+                        bottom: 50.v,
                       ),
-                    ),
-                  ),
-                  ),
-                  SizedBox(height: 15.v),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.h),
-                    child: CustomOutlinedButton(
-                      onPressed: (){
-                        homeController.filterName();
+                      onTap: () {
+
+                        scaffoldKey.currentState?.openDrawer();
                       },
-
-                      text: "Search".tr,
-                      buttonTextStyle: CustomTextStyles.titleLargeOnPrimary ,
-
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: homeController.isNameSelected.value ? AppColors.lightGreen : AppColors.white
-                      ),
                     ),
                   ),
+                  CustomImageView(
+                    imagePath: ImageConstant.imgUntitled11,
+                    height: 170.v,
+                    width: 230.h,
+                    margin: EdgeInsets.only(left: 46.h),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 40.v,),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      print("called");
+                    },
+                    child: HomeCard(
+                      imagePath: ImageConstant.oil,
+                      text: "දෛනික කසාය",
+                      
+                    ),
+                  ),
+                  SizedBox(width: 20.h,),
+                  GestureDetector(
+                    onTap: (){
+                      print("called");
+                    },
+                    child: HomeCard(
+                      imagePath: ImageConstant.paththu,
+                      text: "දෛනික පත්තු",
 
-
-
-                  SizedBox(height: 10.v),
-                  _buildUserprofile(),
+                    ),
+                  ),
 
                 ],
               ),
             ),
-          ),
-        ),
+            SizedBox(height: 40.v,),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      print("called");
+                      Get.toNamed(AppRoutes.searchScreen);
+                    },
+                    child: HomeCard(
+                      imagePath: ImageConstant.drawer,
+                      text: "සෙවීම්",
+
+                    ),
+                  ),
 
 
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildRowname() {
-    return Align(
-      alignment: Alignment.center,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // GestureDetector(
-            //   onTap: (){
-            //     MyDrawer();
-            //   },
-            //   child: Container(
-            //     padding: EdgeInsets.symmetric(
-            //       horizontal: 52.h,
-            //       vertical: 12.v,
-            //     ),
-            //     decoration: AppDecoration.outlinePrimary1.copyWith(
-            //       borderRadius: BorderRadiusStyle.roundedBorder30,
-            //     ),
-            //     child: Text(
-            //       "lbl_name".tr,
-            //       style: CustomTextStyles.titleLargeOnPrimary,
-            //     ),
-            //   ),
-            // ),
-           Obx( () => CustomOutlinedButton(
-              onPressed: (){
-                homeController.isNameSelected.value = true;
-                homeController.isRackSelected.value = false;
-              },
-              width: 166.h,
-              text: "lbl_name".tr,
-              buttonTextStyle:homeController.isNameSelected.value ? CustomTextStyles.titleLargeOnPrimary : theme.textTheme.titleLarge!,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: homeController.isNameSelected.value ? AppColors.lightGreen : AppColors.white
+                ],
               ),
             ),
-           ),
-           Obx( () => CustomOutlinedButton(
-              onPressed: (){
-                homeController.isNameSelected.value = false;
-                homeController.isRackSelected.value = true;
-              },
-              width: 166.h,
-              text: "lbl_rack_no".tr,
-             buttonTextStyle:homeController.isNameSelected.value ? theme.textTheme.titleLarge!  : CustomTextStyles.titleLargeOnPrimary ,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: homeController.isRackSelected.value ? AppColors.lightGreen : AppColors.white
-              ),
-            ),
-           ),
           ],
         ),
       ),
     );
   }
+}
 
-  /// Section Widget
-  Widget _buildUserprofile() {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.h),
-      child: Container(
-        height: Get.height*0.43,
-        child: SingleChildScrollView(
-          child: Obx(
-            () => homeController.isLoading.value? ShimmerEffect(): ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: homeController.foundMedicine.length,
-              itemBuilder: (context, index) {
-                AddMedicineModel model = homeController
-                    .foundMedicine.value[index];
-                return  MedicineItemWidget(
-                  model,
-                )
-                ;
-              },
+class HomeCard extends StatelessWidget {
+  String imagePath;
+  String text;
+  
+
+   HomeCard({
+     required this.text,
+     required this.imagePath,
+
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.lightGreen,
+          width: 1,
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+     padding: EdgeInsets.all(10),
+     child:  Column(
+       crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: CustomImageView(
+              imagePath: imagePath,
+              height: 140.v,
+              width: 140.h,
+
             ),
           ),
-        ),
-      ),
+          SizedBox(height: 10.v,),
+          Text(
+            text,
+            style: CustomTextStyles.homeCardText,
+          ),
+
+        ],
+      )
     );
   }
-
-  /// Navigates to the iphone1415ProMaxFiveScreen when the action is triggered.
-
 }

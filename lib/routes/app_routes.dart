@@ -3,9 +3,13 @@ import 'package:medifinder/presentation/add_medicine_screen/binding/add_medicine
 import 'package:medifinder/presentation/details_screen/binding/details_screen_binding.dart';
 import 'package:medifinder/presentation/details_screen/details_screen.dart';
 import 'package:medifinder/presentation/home_screen/binding/home_binding.dart';
+import 'package:medifinder/presentation/home_screen/controller/home_controller.dart';
 import 'package:medifinder/presentation/home_screen/home_screen.dart';
+
 import 'package:medifinder/presentation/login_screen/binding/login_binding.dart';
 import 'package:medifinder/presentation/login_screen/login_screen.dart';
+import 'package:medifinder/presentation/search_screen/binding/search_binding.dart';
+import 'package:medifinder/presentation/search_screen/search_screen.dart';
 import 'package:medifinder/presentation/splash_screen/binding/splash_screen_binding.dart';
 import 'package:medifinder/presentation/splash_screen/splash_screen.dart';
 
@@ -33,6 +37,7 @@ class AppRoutes {
   static const String appNavigationScreen = '/app_navigation_screen';
 
   static const String initialRoute = '/initialRoute';
+  static const String searchScreen = '/search_screen';
 
   static List<GetPage> pages = [
     GetPage(
@@ -46,9 +51,14 @@ class AppRoutes {
       bindings: [LoginBinding()],
     ),
     GetPage(
+      name: searchScreen,
+      page: () => SearchScreen(),
+      bindings: [SearchBinding()],
+    ),
+    GetPage(
       name: homeScreen,
       page: () => HomeScreen(),
-      bindings: [HomeBinding()],
+      bindings: [HomeScreenBinding()],
     ),
     GetPage(
       name: detailsScreen,

@@ -4,7 +4,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:medifinder/core/app_export.dart';
 import 'package:medifinder/core/consts/AppColors.dart';
 import 'package:medifinder/core/consts/AppStyle.dart';
+import 'package:medifinder/core/utils/size_utils.dart';
 import 'package:medifinder/presentation/home_screen/controller/home_controller.dart';
+import 'package:medifinder/presentation/search_screen/controller/search_controller.dart';
+import 'package:medifinder/presentation/splash_screen/controller/splash_screen_controller.dart';
+
 import 'package:medifinder/presentation/splash_screen/splash_screen.dart';
 class MyDrawer extends GetWidget<HomeController> {
   GlobalKey<ScaffoldState>? scaffoldKey;
@@ -28,7 +32,7 @@ class MyDrawer extends GetWidget<HomeController> {
                   radius: 40.v,
                    child: Image.network(controller.user?.photoURL?? "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"),
                 ),
-                SizedBox(height: 10.v,),
+                SizedBox(height: 10.h,),
                 Text(controller.user?.displayName ?? "",style: AppStyle.drawerText,),
                 Text(controller.user?.email ?? "",style: AppStyle.drawerText)
               ],
