@@ -38,5 +38,8 @@ final Map<String, String> enUs = {
   "msg_iphone_14_15_pro4": "iPhone 14 & 15 Pro Max - Four",
   "msg_iphone_14_15_pro5": "iPhone 14 & 15 Pro Max - Five",
   "msg_network_err": "Network Error",
-  "msg_something_went_wrong": "Something Went Wrong!"
+  "msg_something_went_wrong": "Something Went Wrong!",
+  "lbl_add_paththu":"Add Paththu",
+ "lbl_add_kasaya":"Add Kasaya",
+  "lbl_how_to_make":"How to make",
 };

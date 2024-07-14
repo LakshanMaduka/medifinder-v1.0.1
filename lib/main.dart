@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medifinder/firebase_options.dart';
 import 'core/app_export.dart';
+import 'core/utils/initial_bindings.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         child: GetMaterialApp(
+          initialBinding: InitialBindings(),
           debugShowCheckedModeBanner: false,
           theme: theme,
           translations: AppLocalization(),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,50 +20,48 @@ class SearchScreenController extends GetxController {
 
   User? user;
 
-  RxList<AddMedicineModel> foundMedicine = <AddMedicineModel>[].obs;
+
   RxBool isNameSelected = true.obs;
   RxBool isRackSelected = false.obs;
-  RxList<AddMedicineModel> dataList = <AddMedicineModel>[].obs;
+
   RxBool isLoading =false.obs;
 
   Rx<TextEditingController> searchText = TextEditingController().obs;
   @override
   void onInit() {
+
     user = Get.arguments ;
     super.onInit();
 
   }
   List<AddMedicineModel> temp  =[];
   @override
-  void onReady() async{
-    await getDetails().then((value) => foundMedicine = dataList);
-    temp = dataList.value;
+  void onReady() {
+
     super.onReady();
-  }
+     getDataFromPref();
+    temp = dataList.value;
 
-  Future<void> getDetails() async {
+
+  }
+  final pref = Get.find<PrefUtils>();
+  RxList<AddMedicineModel> foundMedicine = <AddMedicineModel>[].obs;
+  RxList<AddMedicineModel> dataList = <AddMedicineModel>[].obs;
+ List medicineData =[];
+    Future<List<AddMedicineModel>> getDataFromPref() async{
+
     isLoading.value = true;
-    FirebaseFirestore.instance.collection('medicines').get()
-        .then((QuerySnapshot querySnapshot) {
-
-      querySnapshot.docs.forEach((doc) {
-        AddMedicineModel modelData = AddMedicineModel(
-            name: doc["name"],
-            rackNumber: doc["rack_number"],
-            description: doc["description"],
-            imgUrl: doc['img_url'],
-            usage: doc['usage']
-
-        );
-        dataList.add(modelData);
-        isLoading.value = false;
-      });
-
-    }).catchError((e){
-      isLoading.value = false;
-      ShowDialog.errorDialog();
+    medicineData = await pref.getMedicineData();
+    medicineData.forEach((element) {
+      dataList.add(AddMedicineModel.fromJson(jsonDecode(element)));
     });
-  }
+    isLoading.value = false;
+    foundMedicine.value = dataList;
+
+    return dataList;
+
+
+    }
 
 
   List<AddMedicineModel> foundMedicines =[];
@@ -72,15 +72,13 @@ class SearchScreenController extends GetxController {
       foundMedicine.value = temp;
     }else{
       if(isNameSelected.value){
-
-
         // foundMedicine.value = dataList.firstWhere((element) => element.name.trim().contains(name.trim()));
         // Clear previous search results
 
         //     // Perform search by filtering Sinhala words that contain the query
         foundMedicine.value = dataList.where((word) => word.name.toLowerCase().trim().contains(name.toLowerCase().trim()))
             .toList();
-        print(foundMedicine.value);
+
       }else{
         foundMedicine.value = dataList.where((element) => element.rackNumber.toString().contains(name.trim())).toList();
       }
