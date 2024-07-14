@@ -9,7 +9,8 @@ import '../models/userprofile_item_model.dart'; // ignore: must_be_immutable
 
 // ignore_for_file: must_be_immutable
 class MedicineItemWidget extends StatelessWidget {
-  MedicineItemWidget(this.medicineModel, {Key? key})
+  void Function()? onTap;
+  MedicineItemWidget({required this.medicineModel,this.onTap, Key? key})
       : super(
           key: key,
         );
@@ -21,11 +22,7 @@ class MedicineItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Get.toNamed(AppRoutes.detailsScreen,
-        arguments: medicineModel
-        );
-      },
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(right: 5.h,top: 15.h),
         padding: EdgeInsets.symmetric(

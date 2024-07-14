@@ -28,13 +28,12 @@ class SearchScreen
   // final SplashScreenController spController = Get.find<SplashScreenController>();
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         backgroundColor: theme.colorScheme.onPrimary,
-
-
         body: RefreshIndicator(
           onRefresh: () async{
             await Future.delayed(const Duration(seconds: 2));
@@ -116,7 +115,7 @@ class SearchScreen
                     padding: EdgeInsets.only(left: 10.h),
                     child: CustomOutlinedButton(
                       onPressed: (){
-                        searchcontroller.filterName();
+                        controller.filterName();
                       },
 
                       text: "Search".tr,
@@ -124,7 +123,7 @@ class SearchScreen
 
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: searchcontroller.isNameSelected.value ? AppColors.lightGreen : AppColors.white
+                          color: controller.isNameSelected.value ? AppColors.lightGreen : AppColors.white
                       ),
                     ),
                   ),
@@ -154,49 +153,31 @@ class SearchScreen
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // GestureDetector(
-            //   onTap: (){
-            //     MyDrawer();
-            //   },
-            //   child: Container(
-            //     padding: EdgeInsets.symmetric(
-            //       horizontal: 52.h,
-            //       vertical: 12.v,
-            //     ),
-            //     decoration: AppDecoration.outlinePrimary1.copyWith(
-            //       borderRadius: BorderRadiusStyle.roundedBorder30,
-            //     ),
-            //     child: Text(
-            //       "lbl_name".tr,
-            //       style: CustomTextStyles.titleLargeOnPrimary,
-            //     ),
-            //   ),
-            // ),
            Obx( () => CustomOutlinedButton(
               onPressed: (){
-                searchcontroller.isNameSelected.value = true;
-                searchcontroller.isRackSelected.value = false;
+                controller.isNameSelected.value = true;
+                controller.isRackSelected.value = false;
               },
               width: 166.h,
               text: "lbl_name".tr,
-              buttonTextStyle:searchcontroller.isNameSelected.value ? CustomTextStyles.titleLargeOnPrimary : theme.textTheme.titleLarge!,
+              buttonTextStyle:controller.isNameSelected.value ? CustomTextStyles.titleLargeOnPrimary : theme.textTheme.titleLarge!,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: searchcontroller.isNameSelected.value ? AppColors.lightGreen : AppColors.white
+                color: controller.isNameSelected.value ? AppColors.lightGreen : AppColors.white
               ),
             ),
            ),
            Obx( () => CustomOutlinedButton(
               onPressed: (){
-                searchcontroller.isNameSelected.value = false;
-                searchcontroller.isRackSelected.value = true;
+                controller.isNameSelected.value = false;
+                controller.isRackSelected.value = true;
               },
               width: 166.h,
               text: "lbl_rack_no".tr,
-             buttonTextStyle:searchcontroller.isNameSelected.value ? theme.textTheme.titleLarge!  : CustomTextStyles.titleLargeOnPrimary ,
+             buttonTextStyle:controller.isNameSelected.value ? theme.textTheme.titleLarge!  : CustomTextStyles.titleLargeOnPrimary ,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: searchcontroller.isRackSelected.value ? AppColors.lightGreen : AppColors.white
+                  color: controller.isRackSelected.value ? AppColors.lightGreen : AppColors.white
               ),
             ),
            ),
@@ -211,22 +192,28 @@ class SearchScreen
     return Padding(
       padding: EdgeInsets.only(left: 10.h),
       child: Container(
-        height: Get.height*0.43,
+        height: Get.height*0.5,
         child: SingleChildScrollView(
           child: Obx(
-            () => searchcontroller.isLoading.value? ShimmerEffect(): ListView.builder(
+            () => controller.isLoading.value? ShimmerEffect(): Obx(()=> ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: searchcontroller.foundMedicine.length,
+              itemCount: controller.foundMedicine.length,
               itemBuilder: (context, index) {
-                AddMedicineModel model = searchcontroller
+                AddMedicineModel model = controller
                     .foundMedicine.value[index];
                 return  MedicineItemWidget(
-                  model,
+                 medicineModel:  model,
+                      onTap:   (){
+                      Get.toNamed(AppRoutes.detailsScreen,
+                          arguments: model
+                      );
+                    }
                 )
                 ;
               },
             ),
+          ),
           ),
         ),
       ),

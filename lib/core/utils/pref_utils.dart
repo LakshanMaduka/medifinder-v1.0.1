@@ -27,12 +27,22 @@ class PrefUtils {
   Future<void> setThemeData(String value) {
     return _sharedPreferences!.setString('themeData', value);
   }
+  Future<void> setMedicineData(List<String> value) {
+    return _sharedPreferences!.setStringList('medicine_data', value);
+  }
 
   String getThemeData() {
     try {
       return _sharedPreferences!.getString('themeData')!;
     } catch (e) {
       return 'primary';
+    }
+  }
+  List<String> getMedicineData() {
+    try {
+      return _sharedPreferences!.getStringList('medicine_data')!;
+    } catch (e) {
+      return [];
     }
   }
 }

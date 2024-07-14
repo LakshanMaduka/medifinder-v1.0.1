@@ -40,7 +40,31 @@ class MyDrawer extends GetWidget<HomeController> {
           ),
           ListTile(
             leading: Icon(Icons.add_box_outlined,color: AppColors.darkGreen,),
-            title: Text('Add Medicine',style: AppStyle.menuItem,),
+            title: Text('ඖෂධ එකතු කිරීම',style: AppStyle.menuItem,),
+            onTap: () {
+
+              // Navigate to a screen when this item is tapped
+              Get.toNamed(AppRoutes.addMedicineScreen);
+              scaffoldKey!.currentState!.closeDrawer();
+
+
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.add_box_outlined,color: AppColors.darkGreen,),
+            title: Text('පත්තු එකතු කිරීම',style: AppStyle.menuItem,),
+            onTap: () {
+
+              // Navigate to a screen when this item is tapped
+              Get.toNamed(AppRoutes.addPaththuSceen);
+              scaffoldKey!.currentState!.closeDrawer();
+
+
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.add_box_outlined,color: AppColors.darkGreen,),
+            title: Text('කසාය එකතු කිරීම',style: AppStyle.menuItem,),
             onTap: () {
 
               // Navigate to a screen when this item is tapped

@@ -14,6 +14,7 @@ class AddMedicineModel {
   String? description;
   String? usage;
   String? imgUrl;
+  String? id;
 
   AddMedicineModel({
    required this.name,
@@ -21,6 +22,7 @@ class AddMedicineModel {
     this.description,
     this.usage,
     this.imgUrl,
+    this.id
   });
 
   factory AddMedicineModel.fromJson(Map<String, dynamic> json) => AddMedicineModel(
@@ -29,6 +31,7 @@ class AddMedicineModel {
     description: json["description"],
     usage: json["usage"],
     imgUrl: json["img_url"],
+    id: json["id"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +40,7 @@ class AddMedicineModel {
     "description": description,
     "usage": usage,
     "img_url": imgUrl,
+    "id": id
   };
 }
 
