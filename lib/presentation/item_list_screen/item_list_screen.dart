@@ -55,7 +55,7 @@ class ItemListScreen extends GetWidget<ItemListController> {
               Padding(
                 padding: EdgeInsets.only(left: 10.h),
                 child: Text(
-                  "දෛනික පත්තු ලැයිස්තුව".tr,
+                 controller.isKasaya.value ?"දෛනික කසාය ලැයිස්තුව": "දෛනික පත්තු ලැයිස්තුව".tr,
                   style: theme.textTheme.headlineSmall,
                 ),
               ),

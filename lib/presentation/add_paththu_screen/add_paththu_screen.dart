@@ -76,7 +76,7 @@ class AddPaththuSccreen extends GetWidget<AddPaththuController> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "lbl_add_paththu".tr,
+                       controller.isKasaya.value ? "lbl_add_kasaya".tr : "lbl_add_paththu".tr,
                         style: theme.textTheme.headlineSmall,
                       ),
                     ),

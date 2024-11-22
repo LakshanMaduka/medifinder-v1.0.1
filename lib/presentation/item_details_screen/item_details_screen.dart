@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medifinder/core/consts/AppStyle.dart';
@@ -56,7 +58,7 @@ class ItemDetailsScreen extends GetWidget<ItemDetailsController> {
               Padding(
                 padding: EdgeInsets.only(left: 10.h),
                 child: Text(
-                  "පත්තුවේ විස්තරය".tr,
+                "විස්තරය".tr,
                   style: theme.textTheme.headlineSmall,
                 ),
               ),
