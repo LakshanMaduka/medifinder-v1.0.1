@@ -56,7 +56,7 @@ class MyDrawer extends GetWidget<HomeController> {
             onTap: () {
 
               // Navigate to a screen when this item is tapped
-              Get.toNamed(AppRoutes.addPaththuSceen);
+              Get.toNamed(AppRoutes.addPaththuSceen,arguments: false);
               scaffoldKey!.currentState!.closeDrawer();
 
 
@@ -64,11 +64,12 @@ class MyDrawer extends GetWidget<HomeController> {
           ),
           ListTile(
             leading: Icon(Icons.add_box_outlined,color: AppColors.darkGreen,),
-            title: Text('කසාය එකතු කිරීම',style: AppStyle.menuItem,),
+            title: Text('කසාය එකතු කිරීම',style: AppStyle.menuItem,
+            ),
             onTap: () {
 
               // Navigate to a screen when this item is tapped
-              Get.toNamed(AppRoutes.addMedicineScreen);
+              Get.toNamed(AppRoutes.addPaththuSceen,arguments: true);
               scaffoldKey!.currentState!.closeDrawer();
 
 

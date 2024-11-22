@@ -16,4 +16,11 @@ class ApiClient{
       throw e;
     }
   }
+  Future<QuerySnapshot> getKasaya() async{
+    try {
+      return await FirebaseFirestore.instance.collection('kasaya').get();
+    } catch (e) {
+      throw e;
+    }
+  }
 }

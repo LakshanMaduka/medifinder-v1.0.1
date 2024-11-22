@@ -30,7 +30,7 @@ class SearchScreenController extends GetxController {
   @override
   void onInit() {
 
-    user = Get.arguments ;
+
     super.onInit();
 
   }

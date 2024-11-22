@@ -9,10 +9,16 @@ import '../../add_paththu_screen/models/paththu_model.dart';
 class ItemListController extends GetxController {
   RxBool isLoading = false.obs;
   RxList<PaththuModel> paththuList = <PaththuModel>[].obs;
+  RxBool isKasaya = false.obs;
+  @override
+  void onInit() {
 
+    super.onInit();
+    isKasaya.value = Get.arguments;
+  }
   @override
   void onReady() {
-    // TODO: implement onReady
+
     super.onReady();
     getDetails();
   }
@@ -20,7 +26,7 @@ class ItemListController extends GetxController {
   void getDetails() async {
     isLoading.value = true;
     try {
-      QuerySnapshot querySnapshot = await Get.find<ApiClient>().getPaththu();
+      QuerySnapshot querySnapshot =  isKasaya.value ? await Get.find<ApiClient>().getKasaya(): await Get.find<ApiClient>().getPaththu();
       querySnapshot.docs.forEach((doc) {
        paththuList.add(PaththuModel.fromJson(doc.data() as Map<String, dynamic>));
 

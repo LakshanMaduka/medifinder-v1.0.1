@@ -21,6 +21,15 @@ class AddPaththuController extends GetxController {
   RxList<AddMedicineModel> foundMedicine = <AddMedicineModel>[].obs;
   List<AddMedicineModel> temp = <AddMedicineModel>[];
   RxList<AddMedicineModel> dataList = <AddMedicineModel>[].obs;
+  RxBool isKasaya = false.obs;
+  @override
+  void onInit() {
+
+    super.onInit();
+    isKasaya.value = Get.arguments;
+
+  }
+
   @override
   void onReady() async{
 
@@ -42,9 +51,9 @@ class AddPaththuController extends GetxController {
     }
   }
   RxList<AddItemModel> items =<AddItemModel>[].obs;
-  CollectionReference paththu =
-  FirebaseFirestore.instance.collection('paththu');
+
   void addPaththuToWeb(){
+    CollectionReference paththu = isKasaya.value ? FirebaseFirestore.instance.collection('kasaya'): FirebaseFirestore.instance.collection('paththu');
     final paththuItem = PaththuModel(
       name: nameController.text,
       howToMake: howToMakeController.text,
@@ -54,7 +63,7 @@ class AddPaththuController extends GetxController {
     try{
       paththu.add(paththuItem.toJson()).then((value) {
         isLoading.value = false;
-        Get.snackbar("Success", "Paththu added successfully");
+        Get.snackbar("Success", "Item added successfully");
         clearTextFields();
       });
     }catch(e){
@@ -67,7 +76,7 @@ class AddPaththuController extends GetxController {
 
 void addToTheList(String neme, String id){
    items.add(AddItemModel(name: neme, id: id));
-print(items);
+
 
 }
 

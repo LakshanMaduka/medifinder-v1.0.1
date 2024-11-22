@@ -67,7 +67,7 @@ class HomeScreen extends GetWidget<HomeController> {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      print("called");
+                      Get.toNamed(AppRoutes.itemListScreen,arguments: true);
                     },
                     child: HomeCard(
                       imagePath: ImageConstant.oil,
@@ -78,7 +78,7 @@ class HomeScreen extends GetWidget<HomeController> {
                   SizedBox(width: 20.h,),
                   GestureDetector(
                     onTap: (){
-                      Get.toNamed(AppRoutes.itemListScreen);
+                      Get.toNamed(AppRoutes.itemListScreen,arguments: false);
                     },
                     child: HomeCard(
                       imagePath: ImageConstant.paththu,
