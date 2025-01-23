@@ -63,7 +63,6 @@ class ItemListScreen extends GetWidget<ItemListController> {
            Obx(
                () =>  controller.isLoading.value ? Center(child: CircularProgressIndicator(),) :
              Obx (()=>  SingleChildScrollView(
-
                child: ListView.builder(
                  shrinkWrap: true, // Add this line to constrain the ListView
                  physics: NeverScrollableScrollPhysics(), // Disable ListView scrolling

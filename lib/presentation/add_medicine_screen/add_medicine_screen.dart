@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:medifinder/core/consts/AppColors.dart';
+import 'package:medifinder/core/consts/AppStyle.dart';
 import 'package:medifinder/presentation/add_medicine_screen/widgets/sucess_dialog.dart';
 import 'package:medifinder/presentation/search_screen/controller/search_controller.dart';
 import '../../core/app_export.dart';
@@ -9,6 +10,7 @@ import '../../core/utils/validation_functions.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
+import '../item_list_screen/item_list_screen.dart';
 import 'controller/add_medicine_controller.dart'; // ignore_for_file: must_be_immutable
 // ignore_for_file: must_be_immutable
 
@@ -84,6 +86,50 @@ class AddMedicineScreen extends GetWidget<AddMedicineController> {
                     SizedBox(height: 10.v),
                     _buildColumnusage(),
                     SizedBox(height: 10.v),
+                    _buildPlaces(),
+                    SizedBox(height: 15.v),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "lbl_seller_details".tr,
+                        style: theme.textTheme.titleLarge,
+                      ),
+                    ),
+                    _buildName(),
+                    SizedBox(height: 10.v),
+                    _buildContact(),
+                    SizedBox(height: 10.v),
+                    _buildLocation(),
+                    SizedBox(height: 10.v),
+                    _buildAddSeller(),
+                    Obx (()=>  SingleChildScrollView(
+                      child: ListView.builder(
+                        shrinkWrap: true, // Add this line to constrain the ListView
+                        physics: NeverScrollableScrollPhysics(), // Disable ListView scrolling
+                        itemBuilder: (context, index) =>  ListTile(
+                            title: Text(
+                                controller.sellersList.value[index].name!,
+                              style: AppStyle.menuItem,
+                            ),
+                          subtitle: Text(
+                            controller.sellersList.value[index].contactNumber!,
+                            style: theme.textTheme.titleMedium,
+                          ),
+                          trailing: IconButton(
+                            onPressed: (){
+                              controller.removeSellers(controller.sellersList.value[index]);
+                            },
+                            icon: Icon(Icons.delete,color: AppColors.ash,),
+                          ),
+
+                        ),
+
+
+
+                        itemCount: controller.sellersList.length,),
+                    )),
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -127,6 +173,98 @@ class AddMedicineScreen extends GetWidget<AddMedicineController> {
       ],
     );
   }
+  ///places
+  Widget _buildPlaces() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "lbl_places".tr,
+          style: theme.textTheme.titleLarge,
+        ),
+        SizedBox(height: 4.v),
+        CustomTextFormField(
+          controller: controller.placesController,
+          // onChanged: (val){
+          //   controller.separateWords(val);
+          // },
+          hintText: "lbl_example_places".tr,
+          textInputAction: TextInputAction.done,
+          maxLines: 2,
+        )
+      ],
+    );
+  }
+
+  ///sellers
+  ///places
+  Widget _buildName() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "lbl_seller_name".tr,
+          style: theme.textTheme.titleLarge,
+        ),
+        SizedBox(height: 4.v),
+        CustomTextFormField(
+          controller: controller.sellerNameController,
+          onChanged: (val){
+            controller.separateWords(val);
+          },
+          hintText: "lbl_type_here2".tr,
+          textInputAction: TextInputAction.done,
+
+        )
+      ],
+    );
+  }
+  ///places
+  Widget _buildContact() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "lbl_seller_contact_number".tr,
+          style: theme.textTheme.titleLarge,
+        ),
+        SizedBox(height: 4.v),
+        CustomTextFormField(
+          controller: controller.sellerContactNumber,
+          textInputType: TextInputType.number,
+          onChanged: (val){
+            controller.separateWords(val);
+          },
+          hintText: "lbl_type_here2".tr,
+          textInputAction: TextInputAction.done,
+
+        )
+      ],
+    );
+  }
+  ///places
+  Widget _buildLocation() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "lbl_seller_location".tr,
+          style: theme.textTheme.titleLarge,
+        ),
+        SizedBox(height: 4.v),
+        CustomTextFormField(
+          controller: controller.sellerLocation,
+          onChanged: (val){
+            controller.separateWords(val);
+          },
+          hintText: "lbl_type_here2".tr,
+          textInputAction: TextInputAction.done,
+          maxLines: 2,
+        )
+      ],
+    );
+  }
+
 
   /// Section Widget
   Widget _buildColumnracknumbe() {
@@ -271,5 +409,25 @@ class AddMedicineScreen extends GetWidget<AddMedicineController> {
               }
             },
           );
+  }
+  Widget _buildAddSeller() {
+    return controller.isLoadingMedicine.value
+        ? Center(
+      child: CircularProgressIndicator(),
+    )
+        : CustomOutlinedButton(
+      text: "lbl_add_sellers".tr,
+      margin: EdgeInsets.only(
+        left: 28.h,
+        right: 28.h,
+        bottom: 39.v,
+      ),
+      isDisabled: controller.isLoading.value ? true : false,
+      buttonStyle: CustomButtonStyles.outlinePrimaryTL281,
+      buttonTextStyle: CustomTextStyles.titleLargeOnPrimary,
+      onPressed: () {
+controller.addSellers();
+      },
+    );
   }
 }

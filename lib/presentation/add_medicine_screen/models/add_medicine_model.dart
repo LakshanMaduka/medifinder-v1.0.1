@@ -15,6 +15,8 @@ class AddMedicineModel {
   String? usage;
   String? imgUrl;
   String? id;
+  List<String>? places;
+  List<Sellers>? sellers;
 
   AddMedicineModel({
    required this.name,
@@ -22,7 +24,9 @@ class AddMedicineModel {
     this.description,
     this.usage,
     this.imgUrl,
-    this.id
+    this.id,
+    this.sellers,
+    this.places,
   });
 
   factory AddMedicineModel.fromJson(Map<String, dynamic> json) => AddMedicineModel(
@@ -31,6 +35,11 @@ class AddMedicineModel {
     description: json["description"],
     usage: json["usage"],
     imgUrl: json["img_url"],
+      sellers: (json["sellers"] as List<dynamic>?)
+          ?.map((x) => Sellers.fromJson(x))
+          .toList() ?? [],
+    places: json["places"] != null && json["places"].isNotEmpty ?  List<String>.from(json["places"].map((x) => x)):[],
+
     id: json["id"]
   );
 
@@ -40,7 +49,36 @@ class AddMedicineModel {
     "description": description,
     "usage": usage,
     "img_url": imgUrl,
-    "id": id
+    "sellers": List<dynamic>.from(
+        sellers?.map((x) => x.toJson()) ?? []),
+    "places": places!.isNotEmpty ? List<dynamic>.from(places!.map((x) => x)):[],
+    
   };
 }
 
+
+
+
+class Sellers {
+  String? name;
+  String? contactNumber;
+  String? location;
+
+  Sellers({
+     this.name,
+     this.contactNumber,
+     this.location,
+  });
+
+  factory Sellers.fromJson(Map<String, dynamic> json) => Sellers(
+    name: json["name"],
+    contactNumber: json["contact-number"],
+    location: json["location"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "contact-number": contactNumber,
+    "location": location,
+  };
+}
