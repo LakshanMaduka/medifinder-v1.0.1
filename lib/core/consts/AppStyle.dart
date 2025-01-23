@@ -18,6 +18,10 @@ class AppStyle{
       fontSize: 16.fSize,
       color: AppColors.white
   );
+  static TextStyle ashText = TextStyle(
+      fontSize: 16.fSize,
+      color: AppColors.ash
+  );
   static TextStyle textFormText = TextStyle(
       fontSize: 16.fSize,
       color: AppColors.darkGreen

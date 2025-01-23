@@ -42,4 +42,11 @@ final Map<String, String> enUs = {
   "lbl_add_paththu":"Add Paththu",
  "lbl_add_kasaya":"Add Kasaya",
   "lbl_how_to_make":"How to make",
+  "lbl_places":"Places can find",
+  "lbl_example_places":"Place 1, Places 2 ...",
+  "lbl_seller_details":"Seller Details",
+  "lbl_seller_name":"Seller Name",
+  "lbl_seller_contact_number":"Seller Contact Number",
+  "lbl_seller_location":"Seller Location",
+  "lbl_add_sellers":"Add Sellers"
 };

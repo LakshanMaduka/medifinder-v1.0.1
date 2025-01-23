@@ -25,6 +25,10 @@ class AddMedicineController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
 
   TextEditingController usageController = TextEditingController();
+  TextEditingController placesController = TextEditingController();
+  TextEditingController sellerNameController = TextEditingController();
+  TextEditingController sellerContactNumber = TextEditingController();
+  TextEditingController sellerLocation = TextEditingController();
 
 
   Rx<XFile?> pickedImage = Rx<XFile?>(null);
@@ -51,7 +55,12 @@ class AddMedicineController extends GetxController {
       return false;
     }
   }
+  RxList<String> placesList = <String>[].obs;
+  void separateWords(String input) {
 
+    placesList.value = input.split(',').map((word) => word.trim()).toList();
+    print(placesList.value);
+  }
   final _imagePicker = ImagePicker();
   void getImage() async {
     final value = await _imagePicker.pickImage(source: ImageSource.camera);
@@ -106,14 +115,19 @@ class AddMedicineController extends GetxController {
 
    try {
     if(isSuccess){
+      separateWords(placesController.text);
       AddMedicineModel addMedicine = AddMedicineModel(
           name: nameController.text.trim(),
           rackNumber: rackNoController.text.trim(),
           description: descriptionController.text.trim(),
           usage: usageController.text.trim(),
+          places: placesList.value,
+          sellers: sellersList.value,
           imgUrl: imageUrl.value);
       // Call the user's CollectionReference to add a new user
-      await  medicines.add(addMedicine.toJson());
+      var response = await  medicines.add(addMedicine.toJson());
+      print(response.id);
+
       isLoadingMedicine.value = false;
       clearTextFields();
       ShowDialog.successDialog();
@@ -130,6 +144,21 @@ class AddMedicineController extends GetxController {
    }
 
   }
+  RxList<Sellers> sellersList = <Sellers>[].obs;
+  void addSellers(){
+    sellersList.add(Sellers(
+      name: sellerNameController.text,
+      contactNumber: sellerContactNumber.text,
+      location: sellerLocation.text
+    ));
+    sellerNameController.clear();
+    sellerContactNumber.clear();
+    sellerLocation.clear();
+
+  }
+  void removeSellers(Sellers seller){
+    sellersList.remove(seller);
+  }
 void store(){
 
 }
@@ -138,6 +167,9 @@ void store(){
     rackNoController.clear();
     descriptionController.clear();
     usageController.clear();
+    placesController.clear();
+    sellersList.clear();
+    placesList.clear();
     pickedImage.value = null;
   }
 

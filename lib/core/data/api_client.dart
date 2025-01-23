@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ApiClient{
   ApiClient();
+  QuerySnapshot? response;
  Future<QuerySnapshot> getMedicines() async{
    try {
-     return await FirebaseFirestore.instance.collection('medicines').get();
+     response = await FirebaseFirestore.instance.collection('medicines').get();
+
+     return response!;
    } catch (e) {
      throw e;
    }
